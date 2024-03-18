@@ -149,13 +149,15 @@ void GazeboRosKobuki::updateOdometry(common::Time& step_time)
 
   if (publish_tf_)
   {
-    odom_tf_.header = odom_.header;
-    odom_tf_.child_frame_id = odom_.child_frame_id;
-    odom_tf_.transform.translation.x = odom_.pose.pose.position.x;
-    odom_tf_.transform.translation.y = odom_.pose.pose.position.y;
-    odom_tf_.transform.translation.z = odom_.pose.pose.position.z;
-    odom_tf_.transform.rotation = odom_.pose.pose.orientation;
-    tf_broadcaster_.sendTransform(odom_tf_);
+    if(odom_tf_.header.stamp != odom_.header.stamp){
+      odom_tf_.header = odom_.header;
+      odom_tf_.child_frame_id = odom_.child_frame_id;
+      odom_tf_.transform.translation.x = odom_.pose.pose.position.x;
+      odom_tf_.transform.translation.y = odom_.pose.pose.position.y;
+      odom_tf_.transform.translation.z = odom_.pose.pose.position.z;
+      odom_tf_.transform.rotation = odom_.pose.pose.orientation;
+      tf_broadcaster_.sendTransform(odom_tf_);
+    }
   }
 }
 
